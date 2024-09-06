@@ -13,7 +13,7 @@ import org.suhodo.carserver.repository.UserRepository;
 import java.util.Optional;
 
 /*
- * Spring Security의 인증 과정에서 호출되어 진다
+ * Spring Security의 인증 과정에서 호출되어 진다.
  * 사용자의 이름을 username으로 전달 받아 loadUserByUsername 의 매개변수로 잔달받는다
  * 이곳에는 DBMS 의 User테이블에 username을 가진 사용자가 있는지 조회하여
  * 존재하지 않으면 예외처리를 하고 존재하면 UserDetails 객체를 리턴한다.
