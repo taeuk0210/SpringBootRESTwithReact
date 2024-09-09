@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 나중에 다시 아래 코드 부활시키기
                 // 다른 엔드포인트 요청은 인증과정을 거쳐야 접근할 수 있음
 //                .anyRequest().authenticated().and()
-                // "/login" 을 제외한 나머지 모든 요청은 인증전, 필터를 거치게 됨
+                // "/login" 을 제외한 나머지 모든 요청은 인증전, 필터를 거쳐 토큰을 확인하게 됨
 //                .addFilterBefore(authenticationFilter,
 //                        UsernamePasswordAuthenticationFilter.class)
                 // 인증에 오류가 있을 때, 오류 응답 처리를 authEntryPoint가 담당
