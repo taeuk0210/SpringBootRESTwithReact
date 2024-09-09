@@ -95,7 +95,7 @@ function CarList() {
           <ButtonGroup>
             <EditCar data={row} updateCar={editCar} />
             <IconButton onClick={() => onDelClick(row.id)} aria-label="delete">
-              <DeleteIcon sx={{ color: "#CC0000" }} />
+              <DeleteIcon color="error" />
             </IconButton>
           </ButtonGroup>
         );
