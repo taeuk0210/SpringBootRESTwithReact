@@ -11,7 +11,7 @@ import {
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 
-const EditCar = ({ data, updateCar }) => {
+const EditCar = ({ data, editCar }) => {
   const [open, setOpen] = useState(false);
   const [car, setCar] = useState(data.row);
 
@@ -20,7 +20,7 @@ const EditCar = ({ data, updateCar }) => {
   const handleChange = (e) =>
     setCar({ ...car, [e.target.name]: e.target.value });
   const handleSave = () => {
-    updateCar(car, data.id);
+    editCar(car, data.id);
     handleClose();
   };
 

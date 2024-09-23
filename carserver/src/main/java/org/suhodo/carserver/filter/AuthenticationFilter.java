@@ -1,6 +1,7 @@
 package org.suhodo.carserver.filter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ import java.io.IOException;
 * */
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class AuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
@@ -34,6 +36,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         // 1. 토큰 존재 여부 확인
         // String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION); 아래랑 똑같은 동작
         String jwtToken = request.getHeader("Authorization");
+        log.info("///////////////////USER JWT TOKEN : " + jwtToken);
         if (jwtToken != null) {
             // 2. 토큰이 정상인지 확인
             // 토큰을 비밀키로 복호화 후 username 추출

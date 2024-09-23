@@ -66,16 +66,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // "/login" 에 대한 POST 요청은 누구나 접근을 허용함
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .anyRequest().permitAll();// 임시로 모든 요청 허용(개발때만)
+                //.anyRequest().permitAll();// 임시로 모든 요청 허용(개발때만)
         
                 // 나중에 다시 아래 코드 부활시키기
                 // 다른 엔드포인트 요청은 인증과정을 거쳐야 접근할 수 있음
-//                .anyRequest().authenticated().and()
+                .anyRequest().authenticated().and()
                 // "/login" 을 제외한 나머지 모든 요청은 인증전, 필터를 거쳐 토큰을 확인하게 됨
-//                .addFilterBefore(authenticationFilter,
-//                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class)
                 // 인증에 오류가 있을 때, 오류 응답 처리를 authEntryPoint가 담당
-//                .exceptionHandling().authenticationEntryPoint(authEntryPoint);
+                .exceptionHandling().authenticationEntryPoint(authEntryPoint);
     }
 
     @Bean

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { SERVER_URL } from "./constants";
 import { DataGrid } from "@mui/x-data-grid";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { ButtonGroup, Snackbar } from "@mui/material";
+import { ButtonGroup, Snackbar, Button, Stack } from "@mui/material";
 import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import { SERVER_URL } from "./constants";
 import AddCar from "./AddCar";
 import EditCar from "./EditCar";
 
-function CarList() {
+function CarList({ notAuth }) {
   // car 목록을 서버로부터 가져와서 저장
   const [cars, setCars] = useState([]);
 
@@ -22,7 +23,9 @@ function CarList() {
   // axios 와 같은 fetch라는 함수를 이용하여 서버에 요청
   // 유지보수를 위해 server url 은 외부 파일로 따로 관리
   const fetchCars = () => {
-    fetch(SERVER_URL + "api/cars")
+    fetch(SERVER_URL + "api/cars", {
+      headers: { "Authorization": sessionStorage.getItem("jwt") },
+    })
       .then((response) => response.json())
       .then((data) => setCars(data._embedded.cars))
       .catch((e) => console.log(e));
@@ -35,7 +38,10 @@ function CarList() {
   // 삭제후 목록 재 요청
   const onDelClick = (url) => {
     if (window.confirm("Are you sure to delete?")) {
-      fetch(url, { method: "DELETE" })
+      fetch(url, {
+        method: "DELETE",
+        headers: { "Authorization": sessionStorage.getItem("jwt") },
+      })
         .then((response) => {
           if (response.ok) {
             fetchCars();
@@ -52,7 +58,10 @@ function CarList() {
   const addCar = (car) => {
     fetch(SERVER_URL + "api/cars", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": sessionStorage.getItem("jwt"),
+      },
       body: JSON.stringify(car),
     })
       .then((response) => {
@@ -68,7 +77,10 @@ function CarList() {
   const editCar = (car, url) => {
     fetch(url, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": sessionStorage.getItem("jwt"),
+      },
       body: JSON.stringify(car),
     })
       .then((response) => {
@@ -79,12 +91,19 @@ function CarList() {
       })
       .catch((e) => console.error(e));
   };
+
+  // logout
+  const logout = () => {
+    sessionStorage.removeItem("jwt");
+    notAuth();
+  };
+
   const columns = [
-    { field: "brand", headerName: "Brand", width: 200 },
-    { field: "model", headerName: "Model", width: 200 },
-    { field: "color", headerName: "Color", width: 200 },
-    { field: "year", headerName: "Year", width: 150 },
-    { field: "price", headerName: "Price", width: 150 },
+    { field: "brand", headerName: "Brand", width: 150 },
+    { field: "model", headerName: "Model", width: 150 },
+    { field: "color", headerName: "Color", width: 100 },
+    { field: "year", headerName: "Year", width: 100 },
+    { field: "price", headerName: "Price", width: 100 },
     {
       field: "_links.self.href",
       headerName: <AddCar addCar={addCar} />,
@@ -93,7 +112,7 @@ function CarList() {
       renderCell: (row) => {
         return (
           <ButtonGroup>
-            <EditCar data={row} updateCar={editCar} />
+            <EditCar data={row} editCar={editCar} />
             <IconButton onClick={() => onDelClick(row.id)} aria-label="delete">
               <DeleteIcon color="error" />
             </IconButton>
@@ -104,7 +123,18 @@ function CarList() {
   ];
 
   return (
-    <div style={{ height: 500, width: "calc(100%-20px)", margin: "20px" }}>
+    <div
+      style={{
+        height: 500,
+        width: 750,
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginTop: "20px",
+      }}
+    >
+      <Stack direction="row" spacing={10} mt={1}>
+        <Button onClick={logout}>Logout</Button>
+      </Stack>
       <DataGrid
         rows={cars}
         columns={columns}

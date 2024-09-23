@@ -19,13 +19,13 @@ public class UserRepositoryTests {
     public void testUserInsert() {
         BCryptPasswordEncoder cryptor = new BCryptPasswordEncoder();
         User user = User.builder()
-                .username("taeuk")
-                .password(cryptor.encode("taeuk"))
+                .username("user")
+                .password(cryptor.encode("user"))
                 .role("USER")
                 .build();
         User admin = User.builder()
-                .username("bitcamp")
-                .password(cryptor.encode("bitcamp"))
+                .username("admin")
+                .password(cryptor.encode("admin"))
                 .role("USER")
                 .build();
         userRepository.saveAll(Arrays.asList(user, admin));

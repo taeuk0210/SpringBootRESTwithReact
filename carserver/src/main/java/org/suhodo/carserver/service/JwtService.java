@@ -22,18 +22,17 @@ public class JwtService {
     * PREFIX : JWT 토큰 앞에 붙이는 접두사, JWT 앞에는 관습적으로 Bearer 를 붙임
     * KEY : 토큰의 발행 / 검증 시 사용하는 비밀키
     * */
-    static final long EXPIRATION_TIME = 60 * 60 * 24 * 1;
+    static final long EXPIRATION_TIME = 60 * 60 * 24 * 1 * 10000;
     static final String PREFIX = "Bearer";
     static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // 토큰 발급 메소드
     public String getToken(String username) {
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(KEY)
                 .compact();
-        return token;
     }
 
     // 클라이언트가 보내온 토큰에서 username을 추출하는 메소드
